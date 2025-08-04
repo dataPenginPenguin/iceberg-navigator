@@ -1,0 +1,8 @@
+click
+boto3
+pyiceberg
+tabulate
+matplotlib
+networkx
+pyarrow
+tabulate
