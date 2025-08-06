@@ -62,19 +62,19 @@ python -m iiceberg_navigator list --table <database>.<table>
 
 ```bash
 python -m iceberg_navigator list --table icebergdb.yellow_tripdata
-|         Snapshot ID | Timestamp            | Operation        | Parent Snapshot ID   |   Total Size (MB) |   Record Count |
+| Snapshot ID         | Timestamp            | Operation        | Parent Snapshot ID   |   Total Size (MB) |   Record Count |
 |---------------------|----------------------|------------------|----------------------|-------------------|----------------|
-| 1533347322559466931 | 2025-05-22T02:10:24Z | Operation.APPEND | null                 |             13.48 |         729732 |
+| 1533347322559466931 | 2025-05-22T02:10:24Z | Operation.APPEND | null                 |             13.48 |        729,732 |
 | 1485371543345582290 | 2025-05-22T02:10:54Z | Operation.DELETE | 1533347322559466931  |              0.00 |              0 |
-|   67848960317145716 | 2025-05-22T02:15:45Z | Operation.APPEND | 1485371543345582290  |             13.48 |         729732 |
+| 67848960317145716   | 2025-05-22T02:15:45Z | Operation.APPEND | 1485371543345582290  |             13.48 |        729,732 |
 | 3920289554540444894 | 2025-05-22T02:38:46Z | Operation.DELETE | 67848960317145716    |              0.00 |              0 |
-| 6369576239134108166 | 2025-05-22T02:41:51Z | Operation.APPEND | 3920289554540444894  |             13.48 |         729732 |
-| 6216935665394419954 | 2025-05-22T02:41:54Z | Operation.APPEND | 6369576239134108166  |             26.96 |        1459464 |
-| 9058990433822511495 | 2025-05-22T02:42:28Z | Operation.APPEND | 6216935665394419954  |             40.44 |        2189196 |
+| 6369576239134108166 | 2025-05-22T02:41:51Z | Operation.APPEND | 3920289554540444894  |             13.48 |        729,732 |
+| 6216935665394419954 | 2025-05-22T02:41:54Z | Operation.APPEND | 6369576239134108166  |             26.96 |      1,459,464 |
+| 9058990433822511495 | 2025-05-22T02:42:28Z | Operation.APPEND | 6216935665394419954  |             40.44 |      2,189,196 |
 | 5224576979788468429 | 2025-05-22T02:46:53Z | Operation.DELETE | 9058990433822511495  |              0.00 |              0 |
-| 8997131439115911397 | 2025-05-22T02:47:21Z | Operation.APPEND | 5224576979788468429  |             13.48 |         729732 |
+| 8997131439115911397 | 2025-05-22T02:47:21Z | Operation.APPEND | 5224576979788468429  |             13.48 |        729,732 |
 | 4246095293733855575 | 2025-08-02T22:51:16Z | Operation.DELETE | 8997131439115911397  |              0.00 |              0 |
-| 8106328257365313720 | 2025-08-04T07:50:14Z | Operation.APPEND | 6369576239134108166  |             13.48 |         729733 |
+| 8106328257365313720 | 2025-08-04T07:50:14Z | Operation.APPEND | 6369576239134108166  |             13.48 |        729,733 |
 ```
 
 ---
@@ -129,6 +129,41 @@ Summary:
   total-files-size: 14138545
   total-data-files: 2
   total-records: 729733
+
+
+```
+
+---
+
+### Compare snapshot
+
+```bash
+python -m iceberg_navigator compare <snapshot_id> --table <database>.<table>
+```
+
+### Example:
+
+```bash
+python -m iceberg_navigator compare 6216935665394419954 --table icebergdb.yellow_tripdata
+----------------------------------------
+Parent Snapshot
+----------------------------------------
+ID:         6369576239134108166
+File Size:  13.48 MB
+Records:    729,732
+
+----------------------------------------
+Current Snapshot
+----------------------------------------
+ID:         6216935665394419954
+File Size:  26.96 MB
+Records:    1,459,464
+
+========================================
+Summary
+========================================
+Added Records:   729,732
+Deleted Records: 0
 ```
 
 ---
