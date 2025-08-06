@@ -38,11 +38,16 @@ class GlueCatalog:
 
         snapshots = []
         for snap in table.snapshots():
+            total_bytes = int(snap.summary.get("total-files-size", 0)) if snap.summary else 0
+            total_records = int(snap.summary.get("total-records", 0)) if snap.summary else 0
+
             snapshots.append({
                 "snapshot_id": str(snap.snapshot_id),
                 "timestamp": snap.timestamp_ms,
                 "operation": snap.summary.get("operation") if snap.summary else None,
                 "parent_id": str(snap.parent_snapshot_id) if snap.parent_snapshot_id else None,
+                "total_size_mb": round((total_bytes) / (1024 * 1024), 2),
+                "record_count": total_records
             })
 
         return snapshots
@@ -56,13 +61,11 @@ class GlueCatalog:
         if not snap:
             return {"error": f"snapshot_id {snapshot_id} not found"}
 
-        # スキーマのカラム情報作成
         schema_columns = []
         for idx, col in enumerate(table.schema().columns, start=1):
             requiredness = "optional" if col.optional else "required"
             schema_columns.append(f"{idx}: {col.name}: {requiredness} {col.field_type}")
 
-        # summary 辞書化
         summary_dict = {}
         if snap.summary:
             summary_dict["operation"] = snap.summary.operation
