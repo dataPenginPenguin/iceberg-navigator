@@ -3,7 +3,7 @@ from datetime import datetime
 import click
 
 def format_snapshots_table(snapshots):
-    headers = ["Snapshot ID", "Timestamp", "Operation", "Parent Snapshot ID"]
+    headers = ["Snapshot ID", "Timestamp", "Operation", "Parent Snapshot ID", "Total Size (MB)", "Record Count"]
     rows = []
     for snap in snapshots:
         ts = datetime.utcfromtimestamp(snap["timestamp"] / 1000).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -11,17 +11,14 @@ def format_snapshots_table(snapshots):
             snap["snapshot_id"],
             ts,
             snap["operation"],
-            snap["parent_id"] or "null"
+            snap["parent_id"] or "null",
+            snap["total_size_mb"] or "0.00",
+            snap["record_count"] or "0"
         ])
-    return tabulate(rows, headers=headers, tablefmt="github")
+    return tabulate(rows, headers=headers, tablefmt="github",floatfmt='.2f')
 
 
 def show_snapshot_details(snapshot):
-    """
-    snapshot: dict, show_snapshotで返される辞書
-
-    出力をclick.echoで行うようにしています。
-    """
     ts = datetime.utcfromtimestamp(snapshot['timestamp'] / 1000).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     click.echo(f"Table: {snapshot.get('table', 'Unknown')}\n")
