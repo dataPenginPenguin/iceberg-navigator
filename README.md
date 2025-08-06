@@ -16,6 +16,7 @@ This tool allows users to quickly explore Iceberg snapshot histories from the co
 
 - **list**: List all snapshots of an Iceberg table
 - **show**: Show detailed information for a specific snapshot (schema, partitions, summary)
+- **compare**: Compare a snapshot with its parent to show added and deleted records
 - **graph**: Visualize snapshot lineage as a DAG and save as PNG
 
 ---
