@@ -83,3 +83,49 @@ class GlueCatalog:
             "schema": schema_columns,
             "summary": summary_dict,
         }
+
+    def compare_snapshots(self, table_identifier: str, snapshot_id: str):
+        catalog = self._get_catalog()
+        namespace, table_name = table_identifier.split(".", 1)
+        table = catalog.load_table(f"{namespace}.{table_name}")
+
+        current_snap = table.snapshot_by_id(int(snapshot_id))
+        if not current_snap:
+            return {"error": f"snapshot_id {snapshot_id} not found"}
+
+        parent_snap = table.snapshot_by_id(int(current_snap.parent_snapshot_id))
+        if not parent_snap:
+            return {"error": f"parent_snapshot not found"}
+
+        current_summary_dict = {}
+        if current_snap.summary:
+            current_summary_dict["operation"] = current_snap.summary.operation
+            if hasattr(current_snap.summary, "additional_properties"):
+                current_summary_dict.update(current_snap.summary.additional_properties)
+
+        parent_summary_dict = {}
+        if parent_snap.summary:
+            parent_summary_dict["operation"] = parent_snap.summary.operation
+            if hasattr(parent_snap.summary, "additional_properties"):
+                parent_summary_dict.update(parent_snap.summary.additional_properties)
+
+
+        current_size = int(current_snap.summary.get("total-files-size", 0))
+        current_records = int(current_snap.summary.get("total-records", 0))
+
+        parent_size = int(parent_snap.summary.get("total-files-size", 0))
+        parent_records = int(parent_snap.summary.get("total-records", 0))
+
+        added = current_records - parent_records if current_records > parent_records else 0
+        deleted = parent_records - current_records if parent_records > current_records else 0
+
+        return {
+                "current_snapshot_id": str(current_snap.snapshot_id),
+                "current_size": current_size,
+                "current_records": current_records,
+                "parent_snapshot_id": str(parent_snap.snapshot_id),
+                "parent_size": parent_size,
+                "parent_records": parent_records,
+                "added": added,
+                "deleted": deleted,
+            }
