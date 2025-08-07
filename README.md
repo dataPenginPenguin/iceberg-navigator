@@ -1,4 +1,4 @@
-# iceberg-navigator
+# iceberg_navigator
 
 A CLI tool to easily navigate and inspect Apache Iceberg snapshot histories.  
 It uses PyIceberg with AWS Glue REST Catalog to list, show details, and visualize snapshot lineage graphs for Iceberg tables stored on S3.
@@ -32,8 +32,8 @@ This tool allows users to quickly explore Iceberg snapshot histories from the co
 ## Installation
 
 ```bash
-git clone https://github.com/dataPenginPenguin/iceberg-navigator.git
-cd iceberg-navigator
+git clone https://github.com/dataPenginPenguin/iceberg_navigator.git
+cd iceberg_navigator
 pip install -r requirements.txt
 ```
 
@@ -44,7 +44,7 @@ pip install -r requirements.txt
 ### As a module
 
 ```bash
-python -m iceberg-navigator <command> [options]
+python -m iceberg_navigator <command> [options]
 ```
 
 ---
@@ -56,13 +56,13 @@ python -m iceberg-navigator <command> [options]
 ### List snapshots
 
 ```bash
-python -m iceberg-navigator list --table <database>.<table>
+python -m iceberg_navigator list --table <database>.<table>
 ```
 
 ### Example:
 
 ```bash
-python -m iceberg-navigator list --table icebergdb.yellow_tripdata
+python -m iceberg_navigator list --table icebergdb.yellow_tripdata
 | Snapshot ID         | Timestamp            | Operation        | Parent Snapshot ID   |   Total Size (MB) |   Record Count |
 |---------------------|----------------------|------------------|----------------------|-------------------|----------------|
 | 1533347322559466931 | 2025-05-22T02:10:24Z | Operation.APPEND | null                 |             13.48 |        729,732 |
@@ -83,13 +83,13 @@ python -m iceberg-navigator list --table icebergdb.yellow_tripdata
 ### Show snapshot details
 
 ```bash
-python -m iceberg-navigator show <snapshot_id> --table <database>.<table>
+python -m iceberg_navigator show <snapshot_id> --table <database>.<table>
 ```
 
 ### Example:
 
 ```bash
-python -m iceberg-navigator show 1485371543345582290 --table icebergdb.yellow_tripdata
+python -m iceberg_navigator show 1485371543345582290 --table icebergdb.yellow_tripdata
 
 Table: yellow_tripdata
 
@@ -139,13 +139,13 @@ Summary:
 ### Compare snapshot
 
 ```bash
-python -m iceberg-navigator compare <snapshot_id> --table <database>.<table>
+python -m iceberg_navigator compare <snapshot_id> --table <database>.<table>
 ```
 
 ### Example:
 
 ```bash
-python -m iceberg-navigator compare 6216935665394419954 --table icebergdb.yellow_tripdata
+python -m iceberg_navigator compare 6216935665394419954 --table icebergdb.yellow_tripdata
 ----------------------------------------
 Parent Snapshot
 ----------------------------------------
@@ -172,13 +172,13 @@ Deleted Records: 0
 ### Generate lineage graph
 
 ```bash
-python -m iceberg-navigator graph --table <database>.<table>
+python -m iceberg_navigator graph --table <database>.<table>
 ```
 
 ### Example:
 
 ```bash
-python -m iceberg-navigator graph --table icebergdb.yellow_tripdata
+python -m iceberg_navigator graph --table icebergdb.yellow_tripdata
 
 DiGraph with 11 nodes and 10 edges
 Snapshot graph saved to snapshot_graph.png
